@@ -37,9 +37,6 @@
   (require 'benchmark)
   (require 'subr-x))
 
-(declare-function magit-maybe-make-margin-overlay "magit-margin" ())
-(defvar magit-refresh-verbose)
-
 ;;; Options
 
 (defgroup magit-section nil
@@ -1147,7 +1144,8 @@ insert a newline character if necessary."
                 (propertize heading 'font-lock-face 'magit-section-heading)))))
   (unless (bolp)
     (insert ?\n))
-  (magit-maybe-make-margin-overlay)
+  (when (fboundp 'magit-maybe-make-margin-overlay)
+    (magit-maybe-make-margin-overlay))
   (oset magit-insert-section--current content (point-marker)))
 
 (defmacro magit-insert-section-body (&rest body)
@@ -1685,7 +1683,7 @@ again use `remove-hook'."
     (dolist (entry entries)
       (let ((magit--current-section-hook (cons (list hook entry)
                                                magit--current-section-hook)))
-        (if magit-refresh-verbose
+        (if (bound-and-true-p magit-refresh-verbose)
             (message "  %-50s %s" entry
                      (benchmark-elapse (apply entry args)))
           (apply entry args))))))
