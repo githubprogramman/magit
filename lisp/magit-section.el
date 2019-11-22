@@ -1,4 +1,4 @@
-;;; magit-section.el --- section functionality  -*- lexical-binding: t -*-
+;;; magit-section.el --- Insert sections into a buffer  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2019  The Magit Project Contributors
 ;;
@@ -8,24 +8,29 @@
 ;; Author: Jonas Bernoulli <jonas@bernoul.li>
 ;; Maintainer: Jonas Bernoulli <jonas@bernoul.li>
 
-;; Magit is free software; you can redistribute it and/or modify it
-;; under the terms of the GNU General Public License as published by
+;; Package-Requires: ((emacs "26.1") (dash "0"))
+;; Keywords: tools
+;; Homepage: https://github.com/magit/magit
+
+;; Magit-Section is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation; either version 3, or (at your option)
 ;; any later version.
 ;;
-;; Magit is distributed in the hope that it will be useful, but WITHOUT
-;; ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
-;; or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
-;; License for more details.
+;; Magit-Section is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
 ;;
 ;; You should have received a copy of the GNU General Public License
 ;; along with Magit.  If not, see http://www.gnu.org/licenses.
 
 ;;; Commentary:
 
-;; This library implements "sections" as used in all Magit buffers.
-;; If you have used Magit before, then you probably know what that
-;; means, otherwise think "read-only Org-Mode for Git", kinda.
+;; This package implements the main user interface of Magit — the
+;; collapsable sections that make up Magit buffers.  This package
+;; is used by Magit but can also be used by other packages that
+;; have nothing to do with Git.
 
 ;;; Code:
 
@@ -42,7 +47,7 @@
 (defgroup magit-section nil
   "Expandable sections."
   :link '(info-link "(magit)Sections")
-  :group 'magit)
+  :group 'extensions)
 
 (defcustom magit-section-show-child-count t
   "Whether to append the number of children to section headings.
@@ -248,6 +253,13 @@ starts complicating other things, then it will be removed."
   :group 'magit-section
   :type 'boolean)
 
+;;; Faces
+
+(defgroup magit-section-faces nil
+  "Faces used by Magit-Section."
+  :group 'magit-section
+  :group 'faces)
+
 (defface magit-section-highlight
   `((((class color) (background light))
      ,@(and (>= emacs-major-version 27) '(:extend t))
@@ -256,7 +268,7 @@ starts complicating other things, then it will be removed."
      ,@(and (>= emacs-major-version 27) '(:extend t))
      :background "grey20"))
   "Face for highlighting the current section."
-  :group 'magit-faces)
+  :group 'magit-section-faces)
 
 (defface magit-section-heading
   `((((class color) (background light))
@@ -268,13 +280,13 @@ starts complicating other things, then it will be removed."
      :foreground "LightGoldenrod2"
      :weight bold))
   "Face for section headings."
-  :group 'magit-faces)
+  :group 'magit-section-faces)
 
 (defface magit-section-secondary-heading
   `((t ,@(and (>= emacs-major-version 27) '(:extend t))
        :weight bold))
   "Face for section headings of some secondary headings."
-  :group 'magit-faces)
+  :group 'magit-section-faces)
 
 (defface magit-section-heading-selection
   `((((class color) (background light))
@@ -284,7 +296,7 @@ starts complicating other things, then it will be removed."
      ,@(and (>= emacs-major-version 27) '(:extend t))
      :foreground "LightSalmon3"))
   "Face for selected section headings."
-  :group 'magit-faces)
+  :group 'magit-section-faces)
 
 ;;; Classes
 
